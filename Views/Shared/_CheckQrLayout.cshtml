@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Check QR</title>
+    <link rel="stylesheet" href="~/css/bootstrapIndex.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli">
+    <link rel="stylesheet" href="~/fonts/font-awesome.min.css">
+    <link rel='shortcut icon' type='image/x-icon' href='~/favicon.ico' />
+</head>
+
+<body id="page-top">
+    <nav class="navbar navbar-light navbar-expand-lg fixed-top" id="mainNav">
+        <div class="container">
+            <button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler float-right" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse"
+                 id="navbarResponsive">
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="nav-item" role="presentation"></li>
+                    <li class="nav-item" role="presentation"></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <header class="masthead" style="background:url('/img/bg-pattern.png'), linear-gradient(to left, #7b4397, #dc2430);height:100%;">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-lg-12 my-auto">
+                    <div class="mx-auto header-content">
+                        <h1 class="mb-5 align-self-sm-center text-center">Check Your Qr Code Here</h1>
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section id="contact" class="contact bg-primary">
+        <div class="container">
+            <h2><span>We&nbsp;</span><i class="fa fa-heart"></i><span>&nbsp;Greenwich!</span></h2>
+            <ul class="list-inline list-social">
+                <li class="list-inline-item social-facebook"><a href="https://www.facebook.com/srogredn" target="_blank"><i class="fa fa-facebook"></i></a></li>
+            </ul>
+        </div>
+    </section>
+    <div style="text-align: center; display: block;">
+        <img src="~/img/contact.jpg" class="img-fluid" />
+    </div>
+    <footer>
+        <div class="container">
+            <p>©&nbsp;GW Check in 2020</p>
+        </div>
+    </footer>
+    <script src="~/js/jqueryIndex.min.js"></script>
+    <script src="~/js/bootstrapIndex.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <script src="~/js/new-age.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

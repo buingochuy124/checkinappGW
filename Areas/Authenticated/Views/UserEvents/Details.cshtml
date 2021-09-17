@@ -1,0 +1,233 @@
+﻿@model CheckInGWDN.Models.Event
+@using CheckInGWDN.Utility
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_CheckInLayout.cshtml";
+}
+
+<input type="hidden" id="event_Id" value="@Model.Id" />
+<div class="container-fluid">
+    <h3 class="text-dark mb-4">Student Check-in</h3>
+    <div id="result"></div>
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <p class="text-primary m-0 font-weight-bold">
+                Check-in
+            </p>
+        </div>
+        <partial name="_StatusMessage" model="@ViewData["Message"]" />
+        <div class="card-body">
+            <div>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label asp-for="Name" class="col-form-label"></label>
+                    </div>
+                    <div class="col-md-5">
+                        <input asp-for="Name" disabled class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label asp-for="Description" class="col-form-label"></label>
+                    </div>
+                    <div class="col-md-5">
+                        <input asp-for="Description" disabled class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label class="col-form-label">Student Id</label>
+                    </div>
+                    <div class="col-md-5">
+                        <input id="studentId" class="form-control" />
+                    </div>
+
+                    <div class="col-md-5 offset-md-2">
+                        <div class="row">
+                            <div class="col-md" style="margin-top:10px">
+                                <input class="btn btn-success form-control" type="button" onclick="CheckInWithStdId();" value="Check In With Student Id">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class=" form-group row">
+                    <div class="col-md-5 offset-md-2">
+                        <div class="row">
+                            <div class="col-md-6" style="margin-bottom:5px">
+                                @if (User.IsInRole(SD.Administrator) || User.IsInRole(SD.Manager))
+                                {
+                                    <a class="btn btn-success form-control" style="margin-bottom:5px">
+                                        <label class="qrcode-text-btn">
+                                            <video><input class="btn btn-info form-control" type="file" accept="image/*" onchange="openQRCamera(this);"> </video>
+                                        </label>Check In
+                                    </a>
+                                }
+                                <video playsinline style="max-width: 100%; height:auto;" id="preview"></video>
+                            </div>
+                            <div class="col-md-6">
+                                <a asp-action="Index" class="btn btn-success form-control">Back to List</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="~/js/instascan.js"></script>
+    <script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script type="text/javascript">
+        var eventId = document.getElementById('event_Id').value;
+        let scanner = new Instascan.Scanner({ video: document.getElementById('preview'), mirror: false });
+        scanner.addListener('scan', function (res) {
+            $.ajax({
+                url: '/Authenticated/UserEvents/CheckIn',
+                type: 'POST',
+                data: { studentId: res, eventId: eventId },
+                success: function (response) {
+                     if (response.success && response.valid) {
+                         $('#result').html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>' + response.studentName + '</strong> Checked-In <strong>@Model.Name' + '</strong></div>');
+                         if (response.studentAva == null) {
+                             $('#result').append('<div class="col-md-5" style=" background-position:center; background-size:cover; border-radius: 50%;">' + '<img src="/Avatar/default_avatar.png' + '" style=" display: inline; margin: 0 auto; height: 300px; width: 300px" class="img-fluid img-thumbnail rounded-circle" />' + '</div>')
+                         }
+                         else {
+                             $('#result').append('<div class="col-md-5" style=" background-position:center; background-size:cover; border-radius: 50%;">' + '<img src="' + response.studentAva + '" style=" display: inline; margin: 0 auto; height: 300px; width: 300px" class="img-fluid img-thumbnail rounded-circle" />' + '</div>')
+                         }
+                        alert(response.studentName + ' Successful check-in');
+                    }
+                    if (!response.success && response.valid) {
+                        $('#result').html('<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>' + response.studentName + '</strong> Already checked-In @Model.Name<strong>' + '</strong></div>');
+                        if (response.studentAva == null) {
+                            $('#result').append('<div class="col-md-5" style=" background-position:center; background-size:cover; border-radius: 50%;">' + '<img src="/Avatar/default_avatar.png' + '" style=" display: inline; margin: 0 auto; height: 300px; width: 300px" class="img-fluid img-thumbnail rounded-circle" />' + '</div>')
+                        }
+                        else {
+                            $('#result').append('<div class="col-md-5" style=" background-position:center; background-size:cover; border-radius: 50%;">' + '<img src="' + response.studentAva + '" style=" display: inline; margin: 0 auto; height: 300px; width: 300px" class="img-fluid img-thumbnail rounded-circle" />' + '</div>')
+                        }
+                        alert(response.studentName + ' Already checked-in');
+                    }
+                    if (!response.valid && !response.valid) {
+                        $('#result').html('<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>' + "Wrong QR code" + '</strong></div>');
+                        alert(' Wrong QR code');
+                    }
+
+                },
+                error: function () {
+                }
+            });
+        });
+        Instascan.Camera.getCameras().then(function (cameras) {
+            if (cameras.length > 0) {
+                var selectedCam = cameras[1];
+                $.each(cameras, (i, c) => {
+                    if (c.name.indexOf('back') != -1) {
+                        selectedCam = c;
+                        return false;
+                    }
+                });
+
+                scanner.start(selectedCam);
+            } else {
+                alert("No cameras found.");
+            }
+        }).catch(function (e) {
+            alert(e);
+        });
+    </script>
+    <script src="https://static.codepen.io/assets/common/stopExecutionOnTimeout-de7e2ef6bfefd24b79a3f68b414b87b8db5b08439cac3f1012092b2290c719cd.js"></script>
+    <script src="https://dmla.github.io/jsqrcode/src/qr_packed.js"></script>
+    <script id="rendered-js">
+            function openQRCamera(node) {
+                var reader = new FileReader();
+                var eventId = document.getElementById('event_Id').value;
+                reader.onload = function () {
+                    node.value = "";
+                    qrcode.callback = function (res) {
+                        if (res instanceof Error) {
+                            alert("No QR code found. Please make sure the QR code is within the camera's frame and try again.");
+                        } else {
+                            $.ajax({
+                                url: '/Authenticated/UserEvents/CheckIn',
+                                type: 'POST',
+                                data: { studentId: res, eventId: eventId },
+                                success: function (response) {
+                                    if (response.success && response.valid) {
+                                        $('#result').html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>' + response.studentName + '</strong> Checked-In <strong>@Model.Name' + '</strong></div>');
+                                        if (response.studentAva == null) {
+                                            $('#result').append('<div class="col-md-5" style=" background-position:center; background-size:cover; border-radius: 50%;">' + '<img src="/Avatar/default_avatar.png' + '" style=" display: inline; margin: 0 auto; height: 300px; width: 300px" class="img-fluid img-thumbnail rounded-circle" />' + '</div>')
+                                        }
+                                        else {
+                                            $('#result').append('<div class="col-md-5" style=" background-position:center; background-size:cover; border-radius: 50%;">' + '<img src="' + response.studentAva + '" style=" display: inline; margin: 0 auto; height: 300px; width: 300px" class="img-fluid img-thumbnail rounded-circle" />' + '</div>')
+                                        }
+                                        alert(response.studentName + ' Successful check-in');
+                                    }
+                                    if (!response.success && response.valid) {
+                                        $('#result').html('<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>' + response.studentName + '</strong> Already checked-In @Model.Name<strong>' + '</strong></div>');
+                                        if (response.studentAva == null) {
+                                            $('#result').append('<div class="col-md-5" style=" background-position:center; background-size:cover; border-radius: 50%;">' + '<img src="/Avatar/default_avatar.png' + '" style=" display: inline; margin: 0 auto; height: 300px; width: 300px" class="img-fluid img-thumbnail rounded-circle" />' + '</div>')
+                                        }
+                                        else {
+                                            $('#result').append('<div class="col-md-5" style=" background-position:center; background-size:cover; border-radius: 50%;">' + '<img src="' + response.studentAva + '" style=" display: inline; margin: 0 auto; height: 300px; width: 300px" class="img-fluid img-thumbnail rounded-circle" />' + '</div>')
+                                        }
+                                        alert(response.studentName + ' Already checked-in');
+                                    }
+                                    if (!response.valid && !response.valid) {
+                                        $('#result').html('<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>' + "Wrong QR code" + '</strong></div>');
+                                        alert(' Wrong QR code');
+                                    }
+                                },
+                                error: function () {
+                                }
+                            });
+                        }
+                    };
+                    qrcode.decode(reader.result);
+                };
+                reader.readAsDataURL(node.files[0]);
+            }
+    </script>
+    <script type="text/javascript">
+        function CheckInWithStdId() {
+            var eventId = document.getElementById('event_Id').value;
+            var studentId = document.getElementById('studentId').value;
+            $.ajax({
+                url: '/Authenticated/UserEvents/CheckIn',
+                type: 'POST',
+                data: { studentId: studentId, eventId: eventId },
+                success: function (response) {
+                    if (response.success && response.valid) {
+                        $('#result').html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>' + response.studentName + '</strong> Checked-In <strong>@Model.Name' + '</strong></div>');
+                        if (response.studentAva == null) {
+                            $('#result').append('<div class="col-md-5" style=" background-position:center; background-size:cover; border-radius: 50%;">' + '<img src="/Avatar/default_avatar.png' + '" style=" display: inline; margin: 0 auto; height: 300px; width: 300px" class="img-fluid img-thumbnail rounded-circle" />' + '</div>')
+                        }
+                        else {
+                            $('#result').append('<div class="col-md-5" style=" background-position:center; background-size:cover; border-radius: 50%;">' + '<img src="' + response.studentAva + '" style=" display: inline; margin: 0 auto; height: 300px; width: 300px" class="img-fluid img-thumbnail rounded-circle" />' + '</div>')
+                        }
+                        alert(response.studentName + ' Successful check-in');
+                    }
+                    if (!response.success && response.valid) {
+                        $('#result').html('<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>' + response.studentName + '</strong> Already checked-In @Model.Name<strong>' + '</strong></div>');
+                        if (response.studentAva == null) {
+                            $('#result').append('<div class="col-md-5" style=" background-position:center; background-size:cover; border-radius: 50%;">' + '<img src="/Avatar/default_avatar.png' + '" style=" display: inline; margin: 0 auto; height: 300px; width: 300px" class="img-fluid img-thumbnail rounded-circle" />' + '</div>')
+                        }
+                        else {
+                            $('#result').append('<div class="col-md-5" style=" background-position:center; background-size:cover; border-radius: 50%;">' + '<img src="' + response.studentAva + '" style=" display: inline; margin: 0 auto; height: 300px; width: 300px" class="img-fluid img-thumbnail rounded-circle" />' + '</div>')
+                        }
+                        alert(response.studentName + ' Already checked-in');
+                    }
+                    if (!response.valid && !response.valid) {
+                        $('#result').html('<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>' + "Missing or wrong Student Id" + '</strong></div>');
+                        alert(' Missing or wrong Student Id');
+                    }
+
+                },
+                error: function () {
+                }
+            });
+        }
+    </script>
+}

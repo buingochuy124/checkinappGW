@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+}
+
+<div class="container">
+    <div class="block-heading">
+        <h2 class="text-info">Blog Post List</h2>
+        <p>Hướng dẫn sử dụng các chức năng của GW Checkin Web</p>
+    </div>
+    <div class="block-content">
+        <div class="clean-blog-post border-left-success" style="margin-bottom:20px;">
+            <div class="row">
+                <div class="col-lg-5"><img class="rounded img-fluid" src="~/img/blogStudent.png"></div>
+                <div class="col-lg-7">
+                    <h3>GW Add Student Tutorial</h3>
+                    <div class="info"><span class="text-muted">September 14, 2020</span></div>
+                    <p>
+                        Hướng dẫn sử dụng các chức năng thêm sinh viên của GW Checkin Web
+                    </p>
+                    <a asp-action="AddStudent" class="btn btn-outline-primary btn-sm">Read More</a>
+                </div>
+            </div>
+        </div>
+        <div class="clean-blog-post border-left-success" style="margin-bottom:20px;">
+            <div class="row">
+                <div class="col-lg-5"><img class="rounded img-fluid" src="~/img/BlogScanQR.jpg"></div>
+                <div class="col-lg-7">
+                    <h3>GW QR Code Checkin Tutorial</h3>
+                    <div class="info"><span class="text-muted">September 14, 2020</span></div>
+                    <p>
+                        Hướng dẫn sử dụng các chức năng check in bằng Qr Code của GW Checkin Web
+                    </p>
+                    <a asp-action="QrCode" class="btn btn-outline-primary btn-sm">Read More</a>
+                </div>
+            </div>
+        </div>
+        <div class="clean-blog-post border-left-success" style="margin-bottom:20px;">
+            <div class="row">
+                <div class="col-lg-5"><img class="rounded img-fluid" src="~/img/Blogcheckin.png"></div>
+                <div class="col-lg-7">
+                    <h3>GW Checkin Tutorial</h3>
+                    <div class="info"><span class="text-muted">September 14, 2020</span></div>
+                    <p>
+                        Hướng dẫn sử dụng các chức năng của GW Checkin Web
+                    </p>
+                    <a asp-action="Tutorial" class="btn btn-outline-primary btn-sm">Read More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

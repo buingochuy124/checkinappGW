@@ -1,0 +1,73 @@
+﻿@model CheckInGWDN.Models.Student
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+}
+
+<h3 class="text-dark mb-4">Student management</h3>
+<div class="card shadow">
+    <div class="card-header py-3">
+        <p class="text-primary m-0 font-weight-bold">
+            Student Information
+        </p>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            <partial name="_StatusMessage" model="@ViewData["Message"]" />
+            <div class="backgroundWhite shadowNew">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label class="col-form-label"></label>
+                    </div>
+                    <div class="col-md-5" style=" background-position:center; background-size:cover; border-radius: 50%;">
+                        @if (Model.Avatar != null)
+                        {
+                            <img src="@Model.Avatar" style=" display: inline; margin: 0 auto; height: 300px; width: 300px" class="img-fluid img-thumbnail rounded-circle" />
+                        }
+                        else
+                        {
+                            <img src="/Avatar/default_avatar.png" style=" display: inline; margin: 0 auto; height: 300px; width: 300px" class="img-fluid img-thumbnail rounded-circle" />
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label asp-for="Name" class="col-form-label"></label>
+                    </div>
+                    <div class="col-md-5">
+                        <input asp-for="Name" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label asp-for="StudentId" class="col-form-label"></label>
+                    </div>
+                    <div class="col-md-5">
+                        <input asp-for="StudentId" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label asp-for="Avatar" class="col-form-label"></label>
+                    </div>
+                    <div class="col-md-5">
+                        <input type="file" name="files" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-5 offset-md-2">
+                        <div class="row">
+                            <div class="col-md-6" style="margin-bottom:5px">
+                                <input type="submit" class="btn btn-info form-control" asp-route-Id="@Model.Id" value="Update" />
+                            </div>
+                            <div class="col-md-6">
+                                <a asp-action="ListStudent" class="btn btn-success form-control">Back to List</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

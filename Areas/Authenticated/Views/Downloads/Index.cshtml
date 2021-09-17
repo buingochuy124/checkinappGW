@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Download>
+@{
+    ViewData["Title"] = "Download";
+    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+}
+<h3 class="text-dark mb-4">Download management</h3>
+<div class="card shadow">
+    <div class="card-body">
+        <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+            <table class="table my-0" id="dataTable">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.CreateAt)
+                        </th>
+                        <th>Download Qr</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @i
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m => item.CreateAt)
+                                </td>
+                                <td>
+                                    <a asp-action="Download" asp-route-Id="@item.Id" target="_blank" class="btn btn-success float-center">Download QR</a>
+                                </td>
+                                <td>
+                                    <div class="btn btn-group" style="display:inline-block" role="group">
+                                        @* <a class="btn btn-primary text-white" asp-action="Edit" asp-route-Id="@Model"> *@
+                                        @*     <i class="fas fa-edit"></i> *@
+                                        @* </a> *@
+                                        @* <a class="btn btn-success text-white" asp-action="Details" asp-route-Id="@Model"> *@
+                                        @*     <i class="fas fa-list-alt"></i> *@
+                                        @* </a> *@
+                                        <form class="btn-group" method="post">
+                                            <button style="border-bottom-right-radius: 5px; border-top-right-radius: 5px;" onclick="return confirm('Do you want to delete?')" type="submit" class="btn btn-danger" asp-action="Delete" asp-route-Id="@item.Id">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Event>
+@using CheckInGWDN.Utility
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_CheckInLayout.cshtml";
+}
+
+
+    <div class="heading">
+        <h2>Event list</h2>
+        @if (User.IsInRole(SD.Administrator) || User.IsInRole(SD.Manager))
+        {
+            <a asp-action="Index" asp-controller="Home" asp-area="Authenticated" class="btn btn-info float-left">Management</a>
+
+        }
+
+    </div>
+
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            @if (item.status == false)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="project-card-no-image">
+                        <h3>@Html.DisplayFor(m => item.Name)</h3>
+                        <h4>@Html.DisplayFor(m => item.Description)</h4>
+                        <a class="btn btn-success text-white" asp-action="Details" asp-route-Id="@item.Id">
+                            <i class="fas fa-qrcode">&nbsp;</i>Check In
+                        </a>
+                        @if (User.IsInRole(SD.Administrator) || User.IsInRole(SD.Manager))
+                        {
+                            <a class="btn btn-success text-white" style="margin-left:5px" asp-action="Report" asp-route-Id="@item.Id">
+                                <i class="fas fa-clipboard-list">&nbsp;</i>Report
+                            </a>
+                        }
+                    </div>
+                </div>
+
+            }
+            @if (item.status)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="project-card-no-image-done">
+                        <h3>@Html.DisplayFor(m => item.Name)</h3>
+                        <h4>@Html.DisplayFor(m => item.Description)</h4>
+                        <a class="btn btn-success text-white disabled" asp-action="Details" asp-route-Id="@item.Id">
+                            <i class="fas fa-qrcode">&nbsp;</i>Check In
+                        </a>
+                        @if (User.IsInRole(SD.Administrator) || User.IsInRole(SD.Manager))
+                        {
+                            <a class="btn btn-success text-white" style="margin-left:5px" asp-action="Report" asp-route-Id="@item.Id">
+                                <i class="fas fa-clipboard-list">&nbsp;</i>Report
+                            </a>
+                        }
+                    </div>
+                </div>
+
+            }
+        }
+    </div>

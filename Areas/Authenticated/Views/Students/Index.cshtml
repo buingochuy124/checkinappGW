@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Student>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+}
+
+<partial name="_StatusMessage" model="@ViewData["MessageStudent"]" />
+<partial name="_StatusMessage" model="@ViewData["MessageNumber"]" />
+
+<h3 class="text-dark mb-4">Student management</h3>
+<partial name="_StatusMessage" model="@ViewData["Message"]" />
+<div class="card shadow">
+    <div class="card-header py-3">
+        <p class="text-primary m-0 font-weight-bold">
+            Student list
+            <a asp-action="ListStudent" class="btn btn-info float-right" style="margin-right:5px;">View Student List</a>
+        </p>
+        <form class="btn" asp-controller="Students" asp-action="CreateQrCode" method="post" enctype="multipart/form-data">
+            <button class="btn btn-success" type="submit">Create QR code</button>
+        </form>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <form asp-controller="Students" asp-action="Index" method="post" enctype="multipart/form-data">
+                <div class="col-sm-12">
+                    <span>Select File: </span>
+                </div>
+                <div class="col-sm-3">
+                    <input class="form-control-sm" type="file" name="file" />
+                </div>
+                <div class="col-sm-3">
+                    <button class="btn btn-success" style="margin-top:5px" type="submit">Upload</button>
+                </div>
+            </form>
+        </div>
+
+        @if (Model.Count() > 0)
+        {
+            <div class="card-body">
+                <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                    <table class="table my-0" id="dataTable">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>
+                                    @Html.DisplayNameFor(m => m.Name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(m => m.StudentId)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int i = 1;
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @i
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(m => item.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(m => item.StudentId)
+                                        </td>
+                                    </tr>
+                                    i++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
+</div>

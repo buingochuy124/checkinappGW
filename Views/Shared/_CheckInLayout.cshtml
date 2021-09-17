@@ -1,0 +1,51 @@
+﻿<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1, shrink-to-fit=no">
+    <title>GW Check-In</title>
+    <link rel="stylesheet" href="~/css/bootstrapCheckin.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700">
+    <link rel="stylesheet" href="~/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.6.1/css/pikaday.min.css">
+    <script src="https://kit.fontawesome.com/ce2572679b.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+        <div class="container-fluid">
+            <div class="d-none d-sm-block topbar-divider"></div>
+            <div class="nav-item dropdown no-arrow" role="presentation">
+                <div class="nav-item dropdown no-arrow">
+                    <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">
+                        <span class="d-lg-inline mr-2">@User.Identity.Name</span>
+                    </a>
+                    <div class="dropdown-menu shadow dropdown-menu-right animated--grow-in" role="menu">
+                        <a class="dropdown-item" role="presentation" asp-area="Identity" asp-page="/Account/Manage/Index">
+                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <a class="dropdown-item" role="presentation">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                <input type="submit" style="font-size:14px !important" class="btn" value="Logout" />
+                            </a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <main class="page projets-page">
+        <section class="portfolio-block project-no-images">
+            <div class="container">
+                @RenderBody()
+            </div>
+        </section>
+    </main>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/bootstrapCheckin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.6.1/pikaday.min.js"></script>
+    <script src="~/js/themeCheckin.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>

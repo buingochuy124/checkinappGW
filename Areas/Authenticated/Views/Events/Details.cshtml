@@ -1,0 +1,44 @@
+﻿@model CheckInGWDN.Models.Event
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+}
+
+
+<h3 class="text-dark mb-4">Event management</h3>
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <p class="text-primary m-0 font-weight-bold">
+             Event Details
+            </p>
+        </div>
+    <div class="card-body">
+        <form method="post" asp-action="Create">
+            <div class="backgroundWhite shadowNew">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label asp-for="Name" class="col-form-label"></label>
+                    </div>
+                    <div class="col-md-5">
+                        <input asp-for="Name" disabled class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label asp-for="Description" class="col-form-label"></label>
+                    </div>
+                    <div class="col-md-5">
+                        <input asp-for="Description" disabled class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-5 offset-md-2">
+                        <partial name="_DetailsAndBackToListButton" model="Model.Id" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

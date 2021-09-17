@@ -1,0 +1,93 @@
+﻿@model IEnumerable<ApplicationUser>
+@using CheckInGWDN.Utility
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+}
+
+
+    <h3 class="text-dark mb-4">User management</h3>
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <p class="text-primary m-0 font-weight-bold">
+                User Info
+                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-info float-right"><i class="fas fa-plus"></i>&nbsp; New User</a>
+            </p>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+                <table class="table my-0" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                No
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(m => m.FullName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(m => m.Email)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(m => m.PhoneNumber)
+                            </th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int i = 1;
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @i
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => item.FullName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => item.Email)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => item.PhoneNumber)
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <div class="btn btn-group" style="display:inline-block" role="group">
+                                            @if (User.IsInRole(SD.Administrator))
+                                            {
+                                                @if (item.LockoutEnd == null || item.LockoutEnd < DateTime.Now)
+                                                {
+                                                    <a class="btn btn-success text-white" asp-action="Lock" asp-route-Id="@item.Id">
+                                                        <i class="fas fa-lock-open"></i>
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <a class="btn btn-danger text-white" asp-action="UnLock" asp-route-Id="@item.Id">
+                                                        <i class="fas fa-lock"></i>
+                                                    </a>
+                                                }
+                                            }
+                                            <a class="btn btn-primary text-white" asp-action="Edit" asp-route-Id="@item.Id">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form class="btn-group" role="group" method="post">
+                                                <button style="border-bottom-right-radius: 5px; border-top-right-radius: 5px;" onclick="return confirm('Do you want to delete?')" type="submit" class="btn btn-danger" asp-action="Delete" asp-route-Id="@item.Id">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>

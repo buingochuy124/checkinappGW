@@ -1,0 +1,91 @@
+﻿@model IEnumerable<Student>
+
+@{
+    ViewData["Title"] = "ListStudent";
+    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+}
+
+<h3 class="text-dark mb-4">Student management</h3>
+<div class="card shadow">
+    <div class="card-header py-3">
+        <p class="text-primary m-0 font-weight-bold">
+            Student list
+            <a asp-action="Index" class="btn btn-info float-right"><i class="fas fa-plus"></i>&nbsp;  Import Student</a>
+        </p>
+        <form class="btn" asp-controller="Students" asp-action="CreateQrCode" method="post" enctype="multipart/form-data">
+            <button class="btn btn-success" style="margin-top:5px" type="submit">Create QR code</button>
+        </form>
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+            <table class="table my-0" id="dataTable">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.StudentId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.Email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.Qr)
+                        </th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @i
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m => item.StudentId)
+                                </td>
+                                <td>
+                                    @if (item.Email == null)
+                                    {
+                                        <p>No email</p>
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayFor(m => item.Email)
+                                    }
+                                </td>
+                                <td>
+                                    @{
+                                        if (item.Qr == null)
+                                        {
+                                            <p>No Create Qr Code</p>
+                                        }
+                                        else
+                                        {
+                                            <img src="@item.Qr" style=" display: inline; margin: 0 auto; height: 200px; width: 200px" class="img-fluid img-thumbnail" />
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    <partial name="_TableButton" model="item.Id" />
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

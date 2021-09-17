@@ -1,0 +1,64 @@
+﻿@model CheckInGWDN.Models.ViewModels.StudentEventViewModel
+
+@{
+    ViewData["Title"] = "Report";
+    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+}
+
+<h3 class="text-dark mb-4">Event management</h3>
+<div class="card shadow">
+    <div class="card-header py-3">
+        <p class="text-primary m-0 font-weight-bold">
+            <a>Event Name: @Model.Event.Name</a>
+            <a asp-action="Excel" class="btn btn-success float-right" asp-route-Id="@Model.Event.Id">Export Excel</a>
+        </p>
+        <a>Description: @Model.Event.Description</a>
+        <br />
+        <a><strong>Total Student:</strong> @Model.UserEvents.Count()</a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+            <table class="table my-0" id="dataTable">
+                <thead>
+                    <tr>
+                        <th>
+                            No
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Student Id
+                        </th>
+                        <th>
+                            Time Check-In
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 1;
+                        @foreach (var item in Model.UserEvents)
+                        {
+                            <tr>
+                                <td>
+                                    @i
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m => item.Student.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m => item.Student.StudentId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m => item.TimeStamp)
+                                </td>
+                            </tr>
+                            i++;
+                        } 
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

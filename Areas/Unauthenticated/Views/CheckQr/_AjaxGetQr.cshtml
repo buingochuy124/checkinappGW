@@ -1,0 +1,25 @@
+﻿@model CheckInGWDN.Models.Student
+@{
+    if (@Model == null)
+    {
+        string message = "Error: you are not on the student list of the system";
+        <partial name="_StatusMessage" model="@message" />
+    }
+    else
+    {
+        <div class="row">
+            <p class="mt-5 font-weight-bold">@Model.Name</p>
+            @{
+                if (@Model.Qr == null)
+                {
+                    string message = "Error: Contact with Student Affairs Department";
+                    <partial name="_StatusMessage" model="@message" />
+                }
+                else
+                {
+                    <img src="@Model.Qr" class="ml-3 " style="vertical-align:middle" width="150" height="150">
+                }
+            }
+        </div>
+    }
+}

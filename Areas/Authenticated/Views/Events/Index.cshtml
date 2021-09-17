@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Event>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+}
+
+<h3 class="text-dark mb-4">Event management</h3>
+<div class="card shadow">
+    <div class="card-header py-3">
+        <p class="text-primary m-0 font-weight-bold">
+            Event list
+            <a asp-action="Create" class="btn btn-info float-right"><i class="fas fa-plus"></i>&nbsp;  Create Event</a>
+        </p>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+            <table class="table my-0" id="dataTable">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.Description)
+                        </th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @i
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m => item.Description)
+                                </td>
+                                <td>
+                                    <partial name="_TableButton" model="item.Id" />
+                                </td>
+                                <td>
+                                    @if (item.status)
+                                    {
+                                        <div class="btn btn-group" style="display:inline-block" role="group">
+                                            <form class="btn-group" role="group" method="post">
+                                                <button style="border-bottom-right-radius: 5px; border-top-right-radius: 5px;" type="submit" class="btn btn-google" asp-action="Status" asp-route-Id="@item.Id">
+                                                    <i class="fas fa-toggle-off"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    }
+                                    @if (item.status == false)
+                                    {
+                                        <div class="btn btn-group" style="display:inline-block" role="group">
+                                            <form class="btn-group" role="group" method="post">
+                                                <button style="border-bottom-right-radius: 5px; border-top-right-radius: 5px;" type="submit" class="btn btn-facebook" asp-action="Status" asp-route-Id="@item.Id">
+                                                    <i class="fas fa-toggle-on"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+
+                                    }
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div> 
